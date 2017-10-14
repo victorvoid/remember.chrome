@@ -50,5 +50,5 @@ License
 The code is available under the [MIT License](LICENSE.md).
 
 
-[npm-image]: https://badge.fury.io/js/remember.chrome.js.svg
+[npm-image]: https://badge.fury.io/js/remember.chrome.svg
 [npm-url]: https://npmjs.org/package/remember.chrome
