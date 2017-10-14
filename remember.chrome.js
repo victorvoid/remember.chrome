@@ -1,5 +1,5 @@
-export default class Alarm {
-  constructor (name, period, packageid) {
+export default class Remember {
+  constructor (name, period) {
     this.debug = false
     this._name = name
     this._period = period
@@ -20,14 +20,14 @@ export default class Alarm {
       periodInMinutes: this._period
     })
     if (this.debug) {
-      console.log(`[Alarm] created, interval: ${this._period}, name: ${this._name}`)
+      console.log(`[Remember] created, interval: ${this._period}, name: ${this._name}`)
     }
   }
 
   cancel () {
     chrome.alarms.clear(this._name)
     if(this.debug){
-      console.log('[Alarm] cancel')
+      console.log('[Remember] cancel')
     }
   }
 
