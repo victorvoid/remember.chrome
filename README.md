@@ -1,4 +1,6 @@
 # remember.chrome
+[![NPM version][npm-image]][npm-url]
+
 A chrome alarm manager to schedule code to run periodically or at a specified time in the future. </p>
 
 ## Getting started
@@ -46,3 +48,7 @@ License
 -------
 
 The code is available under the [MIT License](LICENSE.md).
+
+
+[npm-image]: https://badge.fury.io/js/remember.chrome.js.svg
+[npm-url]: https://npmjs.org/package/remember.chrome
