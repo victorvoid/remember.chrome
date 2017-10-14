@@ -11,7 +11,9 @@ export default class Remember {
       const hasAlarm = alarms.some((a) => {
         return a.name == this._name
       })
-      if (callback) { callback(hasAlarm) }
+      if (callback) {
+        callback(hasAlarm)
+      }
     })
   }
 
