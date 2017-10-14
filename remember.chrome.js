@@ -1,5 +1,6 @@
 export default class Remember {
-  constructor (name, period) {
+  constructor (name, period, delay) {
+    this._delay = delay || 0
     this.debug = false
     this._name = name
     this._period = period
@@ -16,7 +17,7 @@ export default class Remember {
 
   create() {
     chrome.alarms.create(this._name, {
-      delayInMinutes: this._period,
+      delayInMinutes: this._delay,
       periodInMinutes: this._period
     })
     if (this.debug) {
@@ -39,6 +40,14 @@ export default class Remember {
         this.create()
       }
       this.check()
+    })
+  }
+
+  static listener(){
+    return new Promise((resolve) => {
+      chrome.alarms.onAlarm.addListener((alarm) => {
+        resolve(alarm)
+      })
     })
   }
 }
