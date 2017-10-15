@@ -60,11 +60,11 @@ const alarm = Remember({
 })
 .create()
 
-//log:
+/*log:
 [Remember] created,
            name: hello,
            period in minutes: 2,
-           delay in minutes: 1
+           delay in minutes: 1*/
 
 
 setTimeout(() => {
