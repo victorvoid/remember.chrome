@@ -14,7 +14,7 @@ $ npm install remember.chrome
 
 #### Parameters: 
 
-`new Remember(string name, Number period, Number delay)`
+`new Remember(string name, Number periodInMinutes, Number delay)`
 
 ```js
 import Remember from 'remember.chrome'
@@ -42,7 +42,17 @@ Remember
   console.log(alarm) // hello
 })
 ```
+### You can activate the debugger
 
+```js
+import Remember from 'remember.chrome'
+
+const remember = new Remember('hello', 2)
+remember.debug = true
+
+remember.create() //log: [Remember] created, interval: 2, name: hello
+remember.cancel() //log: [Remember] cancel
+```
 
 License
 -------
