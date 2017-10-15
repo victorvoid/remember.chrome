@@ -1,47 +1,14 @@
-const utils = ({ name, periodInMinutes, log }) => {
-  return ({
-    stop () {
-      chrome.alarms.clear(name)
-      if(log){
-        console.log(`[Remember] ${name} stopped`)
-      }
-    },
-
-    getName(){
-      return name
-    },
-
-    getPeriodInMinutes(){
-      return periodInMinutes
-    }
-  })
-}
-
 const Remember = (props) => {
-  const { name, delayInMinutes, periodInMinutes, log } = props
+  const { name } = props
   return ({
-    create() {
-      chrome.alarms.create(name, {
-        delayInMinutes: delayInMinutes || 0,
-        periodInMinutes: periodInMinutes || 1
-      })
+    create: ~create({ ...props }),
 
-      if (log) {
-        console.log(`[Remember] created,
-                      name: ${name},
-                      period in minutes: ${periodInMinutes},
-                      delay in minutes: ${delayInMinutes}`)
-      }
-
-      return utils(...props)
-    },
+    stop: ~stop({ ...props }),
 
     check(){
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
         chrome.alarms.getAll(alarms => {
-          const hasAlarm = alarms.some(a => {
-            return a.name == name
-          })
+          const hasAlarm = alarms.some(a =>  a.name == name)
           resolve(hasAlarm)
         })
       })
@@ -55,6 +22,41 @@ const Remember = (props) => {
       })
     },
   })
+}
+
+const utils = (props) => {
+  const { name, periodInMinutes } = props
+  return ({
+    create: ~create({ ...props }),
+    stop: ~stop({ ...props }),
+    getName: ~name,
+    getPeriodInMinutes: ~periodInMinutes
+  })
+}
+
+const create = (props) => {
+  const { delayInMinutes, periodInMinutes, log, name } = props
+  chrome.alarms.create(name, {
+    delayInMinutes: delayInMinutes || 0,
+    periodInMinutes: periodInMinutes || 1
+  })
+
+  if (log) {
+    console.log(`[Remember] created,
+                name: ${name},
+                period in minutes: ${periodInMinutes},
+                delay in minutes: ${delayInMinutes}`)
+  }
+
+  return utils({ ...props })
+}
+
+const stop = (props) => {
+  const { name, log } = props
+  chrome.alarms.clear(name)
+  if(log){
+    console.log(`[Remember] ${name} stopped`)
+  }
 }
 
 export default Remember
