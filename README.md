@@ -10,21 +10,24 @@ A chrome alarm manager to schedule code to run periodically or at a specified ti
 ```sh
 $ npm install remember.chrome
 ```
+
 ### Initialize your alarm:
 
 #### Parameters: 
 
-`new Remember(string name, Number periodInMinutes, Number delay)`
+`Remember({ string name, Number periodInMinutes, Number delayInMinutes, Boolean debug })`
 
 ```js
 import Remember from 'remember.chrome'
 
-const remember = new Remember('hello', 1)
-
-remember.create()
+const alarm = Remember({
+  name: 'hello', 
+  periodInMinutes: 1
+})
+.create()
 
 setTimeout(() => {
-  remember.cancel()
+  alarm.stop()
 }, 300000)
 
 //When it is 5 minutes, it stops running an alert
@@ -36,22 +39,38 @@ setTimeout(() => {
 
 import Remember from 'remember.chrome'
 
-Remember
+Remember()
 .listener()
-.then((alarm) => {
+.then(alarm => {
+  // you will enter here, each minute that you configured
   console.log(alarm) // hello
 })
 ```
+
 ### You can activate the debugger
 
 ```js
 import Remember from 'remember.chrome'
 
-const remember = new Remember('hello', 2)
-remember.debug = true
+const alarm = Remember({ 
+  name: 'hello',
+  periodInMinutes: 2, 
+  delayInMinutes: 1, 
+  debug: true 
+})
+.create()
 
-remember.create() //log: [Remember] created, interval: 2, name: hello
-remember.cancel() //log: [Remember] cancel
+//log:
+[Remember] created,
+           name: hello,
+           period in minutes: 2,
+           delay in minutes: 1
+
+
+setTimeout(() => {
+  alarm.stop() //log: [Remember] hello stopped
+}, 300000)
+
 ```
 
 License
