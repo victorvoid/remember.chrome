@@ -1,55 +1,57 @@
-export default class Remember {
-  constructor (name, period, delay) {
-    this._delay = delay || 0
-    this.debug = false
-    this._name = name
-    this._period = period
-  }
-
-  check (callback) {
-    chrome.alarms.getAll((alarms) => {
-      const hasAlarm = alarms.some((a) => {
-        return a.name == this._name
-      })
-      if (callback) {
-        callback(hasAlarm)
+const utils = ({ name, period, log }) => {
+  return ({
+    stop () {
+      chrome.alarms.clear(name)
+      if(log){
+        console.log('[Remember] stopped')
       }
-    })
-  }
+    },
 
-  create() {
-    chrome.alarms.create(this._name, {
-      delayInMinutes: this._delay,
-      periodInMinutes: this._period
-    })
-    if (this.debug) {
-      console.log(`[Remember] created, interval: ${this._period}, name: ${this._name}`)
+    getName(){
+      return name
+    },
+
+    getPeriod(){
+      return period
     }
-  }
-
-  cancel () {
-    chrome.alarms.clear(this._name)
-    if(this.debug){
-      console.log('[Remember] cancel')
-    }
-  }
-
-  toggle () {
-    this.check((hasAlarm) => {
-      if (hasAlarm) {
-        this.cancel()
-      } else {
-        this.create()
-      }
-      this.check()
-    })
-  }
-
-  static listener(){
-    return new Promise((resolve) => {
-      chrome.alarms.onAlarm.addListener((alarm) => {
-        resolve(alarm)
-      })
-    })
-  }
+  })
 }
+
+const Remember = (props) => {
+  const { name, delay, period, log } = props
+  return ({
+    create() {
+      chrome.alarms.create(name, {
+        delayInMinutes: delay || 0,
+        periodInMinutes: period
+      })
+
+      if (log) {
+        console.log(`[Remember] created, period: ${period}, name: ${name}`)
+      }
+
+      return utils(...props)
+    },
+
+    check(){
+      return new Promise((resolve, reject) => {
+        chrome.alarms.getAll(alarms => {
+          const hasAlarm = alarms.some(a => {
+            return a.name == name
+          })
+          resolve(hasAlarm)
+        })
+      })
+    },
+
+    listener(){
+      return new Promise(resolve => {
+        chrome.alarms.onAlarm.addListener(alarm => {
+          resolve(alarm)
+        })
+      })
+    },
+  })
+}
+
+export default Remember

@@ -1,6 +1,6 @@
 {
   "name": "remember.chrome",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A chrome alarm manager",
   "main": "dist/remember.chrome.min.js",
   "scripts": {
@@ -13,12 +13,9 @@
     "url": "git+https://github.com/victorvoid/remember.chrome.git"
   },
   "keywords": [
-    "alarm.chrome",
+    "remember.chrome",
     "alarm",
-    "extension",
-    "chrome",
-    "extension",
-    "helpers"
+    "chrome-alarm"
   ],
   "devDependencies": {
     "babel-core": "^6.24.1",
