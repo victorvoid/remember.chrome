@@ -1,9 +1,9 @@
-const utils = ({ name, period, log }) => {
+const utils = ({ name, periodInMinutes, log }) => {
   return ({
     stop () {
       chrome.alarms.clear(name)
       if(log){
-        console.log('[Remember] stopped')
+        console.log(`[Remember] ${name} stopped`)
       }
     },
 
@@ -11,23 +11,26 @@ const utils = ({ name, period, log }) => {
       return name
     },
 
-    getPeriod(){
-      return period
+    getPeriodInMinutes(){
+      return periodInMinutes
     }
   })
 }
 
 const Remember = (props) => {
-  const { name, delay, period, log } = props
+  const { name, delayInMinutes, periodInMinutes, log } = props
   return ({
     create() {
       chrome.alarms.create(name, {
-        delayInMinutes: delay || 0,
-        periodInMinutes: period
+        delayInMinutes: delayInMinutes || 0,
+        periodInMinutes: periodInMinutes || 1
       })
 
       if (log) {
-        console.log(`[Remember] created, period: ${period}, name: ${name}`)
+        console.log(`[Remember] created,
+                      name: ${name},
+                      period in minutes: ${periodInMinutes},
+                      delay in minutes: ${delayInMinutes}`)
       }
 
       return utils(...props)
